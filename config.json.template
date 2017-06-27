@@ -1,0 +1,5 @@
+{
+    "API_KEY": "",  //Signup here http://www.insteon.com/developer/
+    "INSTEON_USER_NAME" : "", //Your insteon ID, used for login to the insteon App. (https://connect.insteon.com)
+    "INSTEON_PASSWORD"  : "", //Password for the above account
+}
