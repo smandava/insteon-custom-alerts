@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib":[
+      "es2015"
+    ],
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es3"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

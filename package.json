@@ -1,0 +1,25 @@
+{
+  "name": "insteon-custom-alerts",
+  "version": "1.0.0",
+  "description": "monitor insteon sensors and send alerts when something of interset happens.",
+  "dependencies": {
+    "aws-sdk": "^2.1.8",
+    "node-fetch": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "0.0.14",
+    "@types/node": "^8.0.2",
+    "@types/node-fetch": "^1.6.7",
+    "ts-loader": "^2.2.0",
+    "tslint": "^5.4.3",
+    "tslint-loader": "^3.5.3",
+    "typescript": "^2.3.4",
+    "webpack": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
