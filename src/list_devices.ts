@@ -3,7 +3,7 @@ import api from './insteon';
 class App {
     
     listDevices() {
-        api.getAuthHeaders();
+        api.listDevices();
     }
 
 }

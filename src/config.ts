@@ -22,6 +22,12 @@ class Config {
     static password(): string {
         return Config.propertyReader('INSTEON_PASSWORD');
     }
+
+    static getDeviceIds():number[]{
+        let deviceIds = [];
+        let devices = Config.propertyReader('EVENTS');
+        return devices.map(x => x.DEVICEID);
+    }
 }
 
 export default Config;

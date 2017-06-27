@@ -4,8 +4,9 @@ import fetch, { Response } from 'node-fetch';
 class InsteonApi {
     
     static authenticationApiUrl = 'https://connect.insteon.com/api/v2/oauth2/token';
-    static bearerToken = undefined;
-    static authHeaders = undefined;
+    static devicesApiUrl = "https://connect.insteon.com/api/v2/devices";
+    private static bearerToken = undefined;
+    private static authHeaders = undefined;
 
     static async readInsteonMessage (message: Response, context: string, property: string) {
         let json = await message.json();
@@ -45,9 +46,21 @@ class InsteonApi {
                 'Authentication' : `APIKey ${Config.apiKey()}`,
                 'Authorization' : `Bearer ${bearerToken}`
             };
-            console.log(InsteonApi.authHeaders);
         }
-        return InsteonApi.bearerToken;
+        return InsteonApi.authHeaders;
+    }
+
+    static async listDevices() {
+
+        let headers = await InsteonApi.getAuthHeaders()
+         let opts = {
+                method: 'GET',
+                headers: headers
+            };
+
+            let response = await fetch(InsteonApi.devicesApiUrl,opts);         
+            let deviceList = await response.json();
+            console.log(deviceList);
     }
 
 }
