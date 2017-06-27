@@ -1,2 +1,4 @@
 # insteon-custom-alerts
-Get Slack notifications when from Insteon devices 
+Get Slack notifications from Insteon devices 
+
+## Work in progress..
