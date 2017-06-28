@@ -2,4 +2,18 @@
     "API_KEY": "",  //Signup here http://www.insteon.com/developer/
     "INSTEON_USER_NAME" : "", //Your insteon ID, used for login to the insteon App. (https://connect.insteon.com)
     "INSTEON_PASSWORD"  : "", //Password for the above account
+    "EVENTS" :[
+        {
+            "DEVICE_ID": 12345, # DeviceId from device_list.js
+            "EVENT_TYPE" : "running_too_long", #running_too_long - send notification when device is on for longer than THRESH_HOLD_MINUTES
+            "THRESH_HOLD_MINUTES" : 15,
+            "Friendly Name": "Garage door (small)"
+        },
+        {
+            "DEVICE_ID": 23456, # DeviceId from device_list.js
+            "EVENT_TYPE" : "running_too_long",
+            "THRESH_HOLD_MINUTES" : 15,
+            "Friendly Name": "Garage door (long)"
+        }
+    ]
 }

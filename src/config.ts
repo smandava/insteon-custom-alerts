@@ -1,18 +1,19 @@
 class Config {   
-    static config: any = undefined;
+    private static _config: {} = undefined;
     static propertyReader = (name: string) => {
         
-        if (Config.config === undefined) {
-            Config.config = require('../config.json');
+        if (Config._config === undefined) {
+            Config._config = require('../config.json');
         }
 
-        if (Config.config.hasOwnProperty(name)) {
-            return Config.config[name];
+        if (Config._config.hasOwnProperty(name)) {
+            return Config._config[name];
         } else {
             console.log(`Warning: attempting to read non existing configuration $(name)`);
             return undefined;
         }
     }
+
     static apiKey(): string {
         return Config.propertyReader('API_KEY');
     }
@@ -23,11 +24,26 @@ class Config {
         return Config.propertyReader('INSTEON_PASSWORD');
     }
 
-    static getDeviceIds():number[]{
-        let deviceIds = [];
-        let devices = Config.propertyReader('EVENTS');
-        return devices.map(x => x.DEVICEID);
+    static getDeviceIds(): number[] {
+        let events = Config.propertyReader('EVENTS');
+        
+        if (Array.isArray(events)) {
+            return events.map(
+                x => {
+                    if (x.hasOwnProperty('DEVICE_ID')) {
+                        return Number.parseInt(x.DEVICE_ID);
+                    } else {
+                        console.log(x);
+                        throw new Error('DEVICE_ID property not found in the event.');
+                    }
+                    
+                });
+        } else {
+            console.log(events);
+            throw new Error('Event information is missing, check the template..');
+        }
     }
+
 }
 
 export default Config;

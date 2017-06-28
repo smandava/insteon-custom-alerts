@@ -1,10 +1,15 @@
 ﻿import {Context} from '@types/aws-lambda';
+import Config from './config';
+import api from './insteon';
 
-exports.handler = function (event: any , context: Context ) {
-    if (event !== null) {
-        console.log('event = ' + JSON.stringify(event));
-    } else {
-        console.log('No event object');
+export async function handler (event: {} , context: Context|{} ) {
+    let deviceIds = Config.getDeviceIds();
+    
+    for (let deviceId of deviceIds){
+         try {
+                await api.getDeviceInfo(deviceId);
+            } catch (e) {
+                throw e;
+            }
     }
-    context.done(null, 'Hello World');  // SUCCESS with message
-};
+}
