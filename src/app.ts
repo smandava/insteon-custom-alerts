@@ -1,13 +1,13 @@
-﻿import {Context} from '@types/aws-lambda';
+﻿import {Context} from 'aws-lambda';
 import Config from './config';
 import api from './insteon';
 
 export async function handler (event: {} , context: Context|{} ) {
-    let deviceIds = Config.getDeviceIds();
+    let events = Config.getEvents();
     
-    for (let deviceId of deviceIds){
+    for (let event of events){
          try {
-                await api.getDeviceInfo(deviceId);
+                await api.getDeviceStatus(event.DeviceId,event.DeviceType);
             } catch (e) {
                 throw e;
             }

@@ -1,5 +1,6 @@
 import Config from './config';
 import fetch, { Response } from 'node-fetch';
+import {DeviceType} from './interfaces'
 
 class InsteonApi {
     
@@ -105,5 +106,38 @@ class InsteonApi {
             throw e;
         }
     }
+
+    static async getDeviceStatus(deviceId: number, deviceType:DeviceType ) {
+        try {
+            switch (deviceType) {
+                case DeviceType.IO_MODULE :
+                    let headers = await InsteonApi.getAuthHeaders();
+                    headers['Content-Type']='application/json';
+
+                    let body = {
+                        command: 'get_sensor_status',
+                        device_id: deviceId
+                    };
+
+                    let opts = {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: headers
+                    };
+                    
+
+                    let response = await fetch(InsteonApi.deviceInfoUrl(deviceId), opts);
+                    let deviceInfo = await InsteonApi.getJson(response, 'getDeviceInfo');
+                    console.log(deviceInfo);
+                    break;
+                default:
+                    throw new Error('Unknown deviceType')
+            }
+            
+        } catch (e) {
+            throw e;
+        }
+    }
+
 }
 export default InsteonApi;

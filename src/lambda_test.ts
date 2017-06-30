@@ -1,4 +1,4 @@
-﻿import {Context} from '@types/aws-lambda';
+﻿import {Context} from 'aws-lambda';
 import {handler} from './app';
 
 // Set the region to the locations of the S3 buckets

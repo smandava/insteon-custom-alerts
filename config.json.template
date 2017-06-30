@@ -4,16 +4,12 @@
     "INSTEON_PASSWORD"  : "", //Password for the above account
     "EVENTS" :[
         {
-            "DEVICE_ID": 12345, # DeviceId from device_list.js
-            "EVENT_TYPE" : "running_too_long", #running_too_long - send notification when device is on for longer than THRESH_HOLD_MINUTES
-            "THRESH_HOLD_MINUTES" : 15,
-            "Friendly Name": "Garage door (small)"
-        },
-        {
-            "DEVICE_ID": 23456, # DeviceId from device_list.js
-            "EVENT_TYPE" : "running_too_long",
-            "THRESH_HOLD_MINUTES" : 15,
-            "Friendly Name": "Garage door (long)"
+            "DeviceId": 12345,  // DeviceId from device_list.js
+            "Name": "Garage door (small)", // A friendly Name of the device 
+            "DeviceType": "I/O Module", // Valid Values I/O Module
+            "EventType" : "running_too_long", // Valid values running_too_long 
+                   // running_too_log - send notification when device is on for longer than THRESH_HOLD_MINUTES
+            "ThereshHoldInMinutes" : 15,
         }
     ]
 }

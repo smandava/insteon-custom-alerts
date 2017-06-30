@@ -1,0 +1,59 @@
+{ DeviceId: 1302215,
+  DeviceType: 'Dimmer Module',
+  Name: 'Accent Light' }
+{ DeviceId: 1384893,
+  DeviceType: 'I/O Module',
+  Name: 'Big Garage Door' }
+{ DeviceId: 1389646, DeviceType: 'Dimmer Switch', Name: 'DL1' }
+{ DeviceId: 1389645, DeviceType: 'Dimmer Switch', Name: 'DL2' }
+{ DeviceId: 1441425,
+  DeviceType: 'On/Off Switch',
+  Name: 'Front Door' }
+{ DeviceId: 1373801,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'GFL' }
+{ DeviceId: 1373803, DeviceType: 'On/Off Keypad', Name: 'GKP' }
+{ DeviceId: 1384888, DeviceType: 'Dimmer Module', Name: 'GPM' }
+{ DeviceId: 1316194, DeviceType: 'Dimmer Switch', Name: 'K1' }
+{ DeviceId: 1316200, DeviceType: 'Dimmer Switch', Name: 'K2' }
+{ DeviceId: 1330625, DeviceType: 'Dimmer Switch', Name: 'L1' }
+{ DeviceId: 1330626, DeviceType: 'Dimmer Switch', Name: 'L2' }
+{ DeviceId: 1441431,
+  DeviceType: 'On/Off Keypad',
+  Name: 'MasterKeyPad' }
+{ DeviceId: 1320954, DeviceType: 'On/Off Switch', Name: 'MBF' }
+{ DeviceId: 1375416,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'MFL' }
+{ DeviceId: 1325358, DeviceType: 'On/Off Keypad', Name: 'O1' }
+{ DeviceId: 1389625, DeviceType: 'On/Off Switch', Name: 'OB1' }
+{ DeviceId: 1389623, DeviceType: 'On/Off Switch', Name: 'OB2' }
+{ DeviceId: 1389616, DeviceType: 'On/Off Switch', Name: 'OF1' }
+{ DeviceId: 1389613, DeviceType: 'On/Off Switch', Name: 'OF2' }
+{ DeviceId: 1325298,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'OFL' }
+{ DeviceId: 1301234,
+  DeviceType: 'On/Off Switch',
+  Name: 'Potty Fan' }
+{ DeviceId: 1325993,
+  DeviceType: 'Range Extender',
+  Name: 'Range Extender' }
+{ DeviceId: 1375361,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'RFL' }
+{ DeviceId: 1373673, DeviceType: 'On/Off Switch', Name: 'SBF' }
+{ DeviceId: 1373649,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'SFL' }
+{ DeviceId: 1312359,
+  DeviceType: 'Dimmer Module',
+  Name: 'Shravya Lamp' }
+{ DeviceId: 1373656, DeviceType: 'On/Off Keypad', Name: 'SKP' }
+{ DeviceId: 1326980,
+  DeviceType: 'I/O Module',
+  Name: 'Small Garage Door' }
+{ DeviceId: 1374274,
+  DeviceType: 'Ceiling Fan Controller',
+  Name: 'SunFL' }
+{ DeviceId: 1441430, DeviceType: 'On/Off Keypad', Name: 'SunKP' }

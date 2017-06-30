@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 config.json
+mydevices.txt
 
 # testing
 /coverage
