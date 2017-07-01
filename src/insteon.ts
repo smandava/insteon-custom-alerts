@@ -1,16 +1,18 @@
 import Config from './config';
 import fetch, { Response } from 'node-fetch';
-import {DeviceType} from './interfaces'
+import {DeviceType} from './interfaces';
 
 class InsteonApi {
-    
+ 
     static authenticationApiUrl = 'https://connect.insteon.com/api/v2/oauth2/token';
     static devicesApiUrl = 'https://connect.insteon.com/api/v2/devices?properties=all';
-    
+    static commandApiUrl = 'https://connect.insteon.com/api/v2/commands';
+
     private static bearerToken = undefined;
     private static authHeaders = undefined;
 
     static deviceInfoUrl = (deviceId: number) => `https://connect.insteon.com/api/v2/devices/${deviceId}`;
+    static commandStatusApiUrl = (commandId: number) => `https://connect.insteon.com/api/v2/commands/${commandId}`;
 
     static async getJsonProperty (message: Response, context: string, property: string) {
         let json = await InsteonApi.getJson(message, context);
@@ -18,7 +20,6 @@ class InsteonApi {
             return json[property];
         } else {
             console.log(`${property} not found in the response.`);
-
             throw new Error(`${context} failed.`);
         }
     }
@@ -107,37 +108,60 @@ class InsteonApi {
         }
     }
 
-    static async getDeviceStatus(deviceId: number, deviceType:DeviceType ) {
-        try {
-            switch (deviceType) {
-                case DeviceType.IO_MODULE :
-                    let headers = await InsteonApi.getAuthHeaders();
-                    headers['Content-Type']='application/json';
+static async getCommandStatus(commandId: number) {
+    let headers = await InsteonApi.getAuthHeaders();
+    let opts = {
+            method: 'GET',
+            headers: headers
+    };
+    let response = await fetch(InsteonApi.commandStatusApiUrl(commandId), opts);
+    let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
+    return commandStatus;
+}
 
-                    let body = {
-                        command: 'get_sensor_status',
-                        device_id: deviceId
-                    };
+static sleep(seconds: number = 0) {
+  return new Promise(r => setTimeout(r, seconds * 1000));
+}
 
-                    let opts = {
-                        method: 'POST',
-                        body: JSON.stringify(body),
-                        headers: headers
-                    };
-                    
+static async getDeviceStatus(deviceId: number, deviceType: DeviceType) {
+    try {
+        switch (deviceType) {
+            case DeviceType.IO_MODULE :
+                let headers = await InsteonApi.getAuthHeaders();
+                headers['Content-Type'] = 'application/json';
 
-                    let response = await fetch(InsteonApi.deviceInfoUrl(deviceId), opts);
-                    let deviceInfo = await InsteonApi.getJson(response, 'getDeviceInfo');
-                    console.log(deviceInfo);
-                    break;
-                default:
-                    throw new Error('Unknown deviceType')
-            }
-            
-        } catch (e) {
-            throw e;
+                let body = {
+                    command: 'get_sensor_status',
+                    device_id: deviceId
+                };
+
+                let opts = {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: headers
+                };
+
+                let response = await fetch(InsteonApi.commandApiUrl, opts);
+                let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
+                console.log(commandStatus);
+                for (let i = 0; i < 5; ++i) {
+                    if (commandStatus.status === 'pending') {
+                        await InsteonApi.sleep(15);
+                        commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
+                    }else {
+                        return commandStatus;
+                    }
+                }
+                console.log('Get command status failed');
+                break;
+            default:
+                throw new Error('Unknown deviceType');
         }
+        
+    } catch (e) {
+        throw e;
     }
+}
 
 }
 export default InsteonApi;

@@ -1,16 +1,15 @@
-export enum DeviceType{
+export enum DeviceType {
     IO_MODULE
-};
+}
 
-export enum EventType{
+export enum EventType {
     RunningTooLong
-};
+}
 
-
-export interface EventInfo{
-    DeviceId: number,
-    DeviceName: string,
-    EventType: EventType,
-    DeviceType: DeviceType,
-    ThereshHoldInMinutes: number
-};
+export interface EventInfo {
+    DeviceId: number;
+    DeviceName: string;
+    EventType: EventType;
+    DeviceType: DeviceType;
+    ThereshHoldInMinutes: number;
+}

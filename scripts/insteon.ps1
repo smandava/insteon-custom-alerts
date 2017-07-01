@@ -92,10 +92,10 @@ Function GetCommandStatus(
 
 
 $config = Get-Content ..\config.json |ConvertFrom-Json
-$ApiKey = $config.API_KEY
+$ApiKey = $config.apiKey
 
 $AuthenticationApiUrl = "https://connect.insteon.com/api/v2/oauth2/token"
-$AuthenticationRequest = "grant_type=password&username=$($Config.INSTEON_USER_NAME)&password=$($Config.INSTEON_PASSWORD)&client_id=$ApiKey"
+$AuthenticationRequest = "grant_type=password&username=$($Config.insteonUserName)&password=$($Config.insteonPassword)&client_id=$ApiKey"
 $AuthResponse=Invoke-RestMethod -Uri $AuthenticationApiUrl -Method Post -Body $AuthenticationRequest
 
 # $Houses = GetHouses -ApiKey $ApiKey -BearerKey $AuthResponse.access_token

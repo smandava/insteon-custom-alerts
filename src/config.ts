@@ -1,4 +1,5 @@
-import {DeviceType, EventType, EventInfo} from './interfaces'
+import {DeviceType, EventType, EventInfo} from './interfaces';
+import Event from './event';
 
 class Config {   
     private static _config: {} = undefined;
@@ -17,68 +18,28 @@ class Config {
     }
 
     static apiKey(): string {
-        return Config.propertyReader('API_KEY');
+        return Config.propertyReader('apiKey');
     }
     static userName(): string {
-        return Config.propertyReader('INSTEON_USER_NAME');
+        return Config.propertyReader('insteonUserName');
     }
     static password(): string {
-        return Config.propertyReader('INSTEON_PASSWORD');
+        return Config.propertyReader('insteonPassword');
     }
 
+    static bucketName(): string {
+        return Config.propertyReader('bucketName');
+    }
+
+    static docName(): string {
+        return Config.propertyReader('docName');
+    }
+    
     static getEvents(): EventInfo[] {
         let events = Config.propertyReader('EVENTS');
         
         if (Array.isArray(events)) {
-            return events.map(
-                x => {
-                    var event: EventInfo = {
-                        DeviceId:  undefined,
-                        DeviceType: undefined,
-                        DeviceName: undefined,
-                        ThereshHoldInMinutes: undefined,
-                        EventType: undefined
-                    };
-                    for(let prop in event){
-                        if (x.hasOwnProperty(prop)){
-                            switch (prop) {
-                                case 'DeviceId':
-                                case 'ThereshHoldInMinutes':
-                                    if (/^[1-9][0-9]*$/.test(x[prop].tostring())){
-                                        event[prop]=parseInt(x[prop]);
-                                    } else {
-                                        console.log(x)
-                                        throw new Error(`Invalid number for ${prop}`)
-                                    }
-                                case 'EventType':
-                                case 'DeviceType':
-                                    switch (x[prop]) {
-                                        case 'I/O Module':
-                                            event[prop] = DeviceType.IO_MODULE;
-                                            break;
-                                        case 'RunningTooLong':
-                                            event[prop] = EventType.RunningTooLong;
-                                            break;
-                                        default:
-                                            console.log(x);
-                                            throw new Error(`Invalid value ${x[prop]} for ${prop}`);
-                                    }
-                                case 'Name': {
-                                    if (x[prop] && /\S+/.test(x[prop])){
-                                        event[prop]=x[prop];
-                                    } else {
-                                        console.log(x);
-                                        throw new Error(`Invalid value $(x[prop]) for ${prop}`);
-                                    }
-                                }                                
-                            }
-                        } else {
-                            console.log(x);
-                            throw new Error(`Mossing required parameter ${prop}`);
-                        }
-                    }
-                    return event;
-                });
+            return events.map((x) => Event.FromJson(x));
         } else {
             console.log(events);
             throw new Error('Event information is missing, check the template.');
