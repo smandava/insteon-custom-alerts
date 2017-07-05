@@ -16,4 +16,4 @@ class FakeContext implements PartialContext {
     }
 }
 
-handler(null, new FakeContext());
+handler(null, new FakeContext(), null);

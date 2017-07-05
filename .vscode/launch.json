@@ -8,10 +8,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${file}",
+            "name": "publish",
+            "program": "${workspaceRoot}/build/publish_lambda.js",
             "outFiles": [
-                "${workspaceRoot}/out/**/*.js"
+                
             ]
         }
     ]

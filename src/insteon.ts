@@ -1,6 +1,6 @@
 import Config from './config';
 import fetch, { Response } from 'node-fetch';
-import {DeviceType} from './interfaces';
+import {DeviceType, DeviceStatusCode} from './interfaces';
 
 class InsteonApi {
  
@@ -108,60 +108,87 @@ class InsteonApi {
         }
     }
 
-static async getCommandStatus(commandId: number) {
-    let headers = await InsteonApi.getAuthHeaders();
-    let opts = {
-            method: 'GET',
-            headers: headers
-    };
-    let response = await fetch(InsteonApi.commandStatusApiUrl(commandId), opts);
-    let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
-    return commandStatus;
-}
-
-static sleep(seconds: number = 0) {
-  return new Promise(r => setTimeout(r, seconds * 1000));
-}
-
-static async getDeviceStatus(deviceId: number, deviceType: DeviceType) {
-    try {
-        switch (deviceType) {
-            case DeviceType.IO_MODULE :
-                let headers = await InsteonApi.getAuthHeaders();
-                headers['Content-Type'] = 'application/json';
-
-                let body = {
-                    command: 'get_sensor_status',
-                    device_id: deviceId
-                };
-
-                let opts = {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: headers
-                };
-
-                let response = await fetch(InsteonApi.commandApiUrl, opts);
-                let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
-                console.log(commandStatus);
-                for (let i = 0; i < 5; ++i) {
-                    if (commandStatus.status === 'pending') {
-                        await InsteonApi.sleep(15);
-                        commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
-                    }else {
-                        return commandStatus;
-                    }
-                }
-                console.log('Get command status failed');
-                break;
-            default:
-                throw new Error('Unknown deviceType');
-        }
-        
-    } catch (e) {
-        throw e;
+    static async getCommandStatus(commandId: number) {
+        let headers = await InsteonApi.getAuthHeaders();
+        let opts = {
+                method: 'GET',
+                headers: headers
+        };
+        let response = await fetch(InsteonApi.commandStatusApiUrl(commandId), opts);
+        let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
+        return commandStatus;
     }
-}
+
+    static sleep(seconds: number = 0) {
+        return new Promise(r => setTimeout(r, seconds * 1000));
+    }
+
+    static async GetIoModuleDeviceStatus(deviceId: number): Promise<DeviceStatusCode> {
+        try {
+            let headers = await InsteonApi.getAuthHeaders();
+            headers['Content-Type'] = 'application/json';
+            let body = {
+                command: 'get_sensor_status',
+                device_id: deviceId
+            };
+            let opts = {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: headers
+            };
+            let response = await fetch(InsteonApi.commandApiUrl, opts);
+            let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
+            
+            for (let i = 0; i < 5; ++i) {
+                if (commandStatus.status === 'pending') {
+                    await InsteonApi.sleep(2);
+                    commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
+                    
+                } else if (commandStatus.status === 'succeeded') {
+                    if (commandStatus.hasOwnProperty('response') &&
+                        commandStatus.response.hasOwnProperty('level')) {
+                        if (commandStatus.response.level === 100) {
+                            return DeviceStatusCode.Off;
+                        } else if (commandStatus.response.level === 0) {
+                            return DeviceStatusCode.On;
+                        } else {
+                            console.log('Unable to get response.level from');
+                            console.log(commandStatus);
+                            return DeviceStatusCode.Error;
+                        }
+                    } else {
+                        console.log('invalid response');
+                        console.log(commandStatus);
+                        return DeviceStatusCode.Error;
+                    }
+                } else {
+                    console.log('invalid response');
+                    console.log(commandStatus);
+                    return DeviceStatusCode.Error;
+                }
+            }
+            console.log('Giving up device status query after 5 attempts');
+            console.log(commandStatus);
+            return DeviceStatusCode.TimeOut;
+
+        } catch (e) {
+            console.log(e);
+            return DeviceStatusCode.Error;
+        }        
+    }
+
+    static async getDeviceStatus(deviceId: number, deviceType: DeviceType): Promise<DeviceStatusCode> {
+        try {
+            switch (deviceType) {
+                case DeviceType.IO_MODULE :
+                    return await InsteonApi.GetIoModuleDeviceStatus(deviceId);
+                default:
+                    throw new Error('Unknown deviceType');
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
 
 }
 export default InsteonApi;

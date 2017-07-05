@@ -27,12 +27,24 @@ class Config {
         return Config.propertyReader('insteonPassword');
     }
 
+    static functionName(): string {
+        return Config.propertyReader('lambdaFunctionName');
+    }
+
     static bucketName(): string {
         return Config.propertyReader('bucketName');
     }
 
     static docName(): string {
         return Config.propertyReader('docName');
+    }
+
+    static lambdaRoleArn(): string {
+        return Config.propertyReader('lambdaRoleArn');
+    }
+
+    static region(): string {
+        return Config.propertyReader('region');
     }
     
     static getEvents(): EventInfo[] {

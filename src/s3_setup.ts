@@ -3,6 +3,7 @@ import Config from './config';
 
 async function createInitialObject(bucketName: string, keyName: string) {
     try {
+        let s3 = new S3();
         let bucketRequest = {
             Bucket: bucketName
         };
@@ -19,7 +20,5 @@ async function createInitialObject(bucketName: string, keyName: string) {
         throw new Error('failed');   
     }
 }
-
-let s3 = new S3();
 
 createInitialObject(Config.bucketName(), Config.docName());

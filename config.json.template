@@ -1,4 +1,6 @@
 {
+    "lambdaFunctionName": "insteon-custom-alerts",
+    "lambdaRoleArn: "arn:aws:iam::xxxxxxxxxxxxxx:role/yyyyyyyy",
     "bucketName" : "insteon-custom-alerts",
     "docName" : "device_status.json",
     "apiKey": "",  //Signup here http://www.insteon.com/developer/
