@@ -63,9 +63,10 @@ class S3Provider {
                     obj.Name = status.Name;
                     obj.PreviousStatus = obj.Status;
                     obj.Status = status.Status;
+                    obj.Threshold = status.Threshold;
                     mergedStatus[deviceId] = obj;
                 }  else {
-                    status.firstSeen = Date.now();
+                    status.FirstSeen = Date.now();
                     mergedStatus[deviceId] = status;
                 }  
             }

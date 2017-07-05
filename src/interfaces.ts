@@ -24,6 +24,7 @@ export interface EventInfo {
 export interface DeviceStatus {
     Name: string;
     Status: DeviceStatusCode;
-    firstSeen?: number;
+    FirstSeen?: number;
+    Threshold?: number;
     PreviousStatus: DeviceStatusCode;
 }

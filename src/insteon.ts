@@ -123,7 +123,7 @@ class InsteonApi {
         return new Promise(r => setTimeout(r, seconds * 1000));
     }
 
-    static async GetIoModuleDeviceStatus(deviceId: number): Promise<DeviceStatusCode> {
+    static async GetIoModuleDeviceStatus(deviceId: number, pollingInterval: number= 3): Promise<DeviceStatusCode> {
         try {
             let headers = await InsteonApi.getAuthHeaders();
             headers['Content-Type'] = 'application/json';
@@ -141,7 +141,7 @@ class InsteonApi {
             
             for (let i = 0; i < 5; ++i) {
                 if (commandStatus.status === 'pending') {
-                    await InsteonApi.sleep(5);
+                    await InsteonApi.sleep(pollingInterval);
                     commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
                     
                 } else if (commandStatus.status === 'succeeded') {
@@ -181,7 +181,16 @@ class InsteonApi {
         try {
             switch (deviceType) {
                 case DeviceType.IO_MODULE :
-                    return await InsteonApi.GetIoModuleDeviceStatus(deviceId);
+                    let deviceStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId);
+                    for (let i = 0; i < 5; ++i) {
+                        if (deviceStatus === DeviceStatusCode.Error) {
+                            InsteonApi.sleep(5);
+                            deviceStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId, 10);
+                        } else {
+                            break;
+                        }
+                    }
+                    return deviceStatus;
                 default:
                     throw new Error('Unknown deviceType');
             }

@@ -91,7 +91,7 @@ Function GetCommandStatus(
 }
 
 
-$config = Get-Content ..\config.json |ConvertFrom-Json
+$config = Get-Content "$(Split-Path -parent $PSCommandPath)\..\config.json"  |ConvertFrom-Json
 $ApiKey = $config.apiKey
 
 $AuthenticationApiUrl = "https://connect.insteon.com/api/v2/oauth2/token"

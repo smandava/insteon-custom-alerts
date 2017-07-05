@@ -3,18 +3,20 @@ import Config from './config';
 import api from './insteon';
 import S3Provider from './s3-provider';
 import {DeviceStatus} from './interfaces';
+import SlackProvider from './slack-provider';
 
 export async function handler (event: {} , context: Context|{}, callback: {} ) {
     let events = Config.getEvents();
     let currentStatus = {};
-    for (let enentDetails of events){
+    for (let eventDetails of events){
          try {
-            let status = await api.getDeviceStatus(enentDetails.DeviceId, enentDetails.DeviceType);
-            let name = enentDetails.DeviceName;
-            let id = enentDetails.DeviceId;
+            let status = await api.getDeviceStatus(eventDetails.DeviceId, eventDetails.DeviceType);
+            let name = eventDetails.DeviceName;
+            let id = eventDetails.DeviceId;
             currentStatus[id.toString()] = {
                 Name: name,
-                Status: status
+                Status: status,
+                Threshold: eventDetails.ThereshHoldInMinutes
             };
         } catch (e) {
             throw e;
@@ -25,5 +27,7 @@ export async function handler (event: {} , context: Context|{}, callback: {} ) {
     let mergedSatus = await storage.mergeStatus(currentStatus);
     console.log(mergedSatus);
     storage.updateStatus(mergedSatus);
+    let notifier = new SlackProvider(mergedSatus);
+    await notifier.sendAlerts(Config.slackWebHook());
 
 }

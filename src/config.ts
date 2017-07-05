@@ -47,6 +47,10 @@ class Config {
         return Config.propertyReader('region');
     }
     
+    static slackWebHook(): string {
+        return Config.propertyReader('slackWebHook');
+    }
+
     static getEvents(): EventInfo[] {
         let events = Config.propertyReader('EVENTS');
         
