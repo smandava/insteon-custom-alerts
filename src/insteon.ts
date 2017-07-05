@@ -141,7 +141,7 @@ class InsteonApi {
             
             for (let i = 0; i < 5; ++i) {
                 if (commandStatus.status === 'pending') {
-                    await InsteonApi.sleep(2);
+                    await InsteonApi.sleep(5);
                     commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
                     
                 } else if (commandStatus.status === 'succeeded') {

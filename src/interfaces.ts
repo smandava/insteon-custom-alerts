@@ -22,7 +22,8 @@ export interface EventInfo {
 }
 
 export interface DeviceStatus {
-    Id: number;
     Name: string;
     Status: DeviceStatusCode;
+    firstSeen?: number;
+    PreviousStatus: DeviceStatusCode;
 }
