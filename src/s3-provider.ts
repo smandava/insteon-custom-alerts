@@ -51,13 +51,14 @@ class S3Provider {
         let mergedStatus = {};
 
         let storedStatus = await this.getStoredStatus();
-
+        let log = false;
         for (let deviceId in currentStatus) {
             if (currentStatus.hasOwnProperty(deviceId)) {
                 let status: DeviceStatus = currentStatus[deviceId];
                 if (status.Status === DeviceStatusCode.Off) {
                     continue;
                 }
+                log = true;
                 if (storedStatus.hasOwnProperty(deviceId)) {
                     let obj: DeviceStatus = storedStatus[deviceId];
                     obj.Name = status.Name;
@@ -71,7 +72,9 @@ class S3Provider {
                 }  
             }
         }
-
+        if (log) {
+            console.log (mergedStatus);
+        }
         return mergedStatus;
     }
 

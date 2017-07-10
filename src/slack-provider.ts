@@ -15,6 +15,7 @@ class SlackProvider {
             if (this.currentStatus.hasOwnProperty(deviceId)) {
                 let status: DeviceStatus = this.currentStatus[deviceId];
                 if ( moment().diff(moment(status.Threshold), 'minute') > status.Threshold ) {
+                    console.log(status);
                     let message = {
                         text: `${status.Name} has been ${status.Status} since ${moment(status.FirstSeen).fromNow()}`
                     };
