@@ -1,4 +1,4 @@
-import {EventInfo, DeviceType, EventType} from './interfaces';
+import { EventInfo, DeviceType, EventType } from './interfaces';
 
 class Event implements EventInfo {
     DeviceId = undefined;

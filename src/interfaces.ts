@@ -7,10 +7,10 @@ export enum EventType {
 }
 
 export enum DeviceStatusCode {
-    On,
-    Off,
-    Error,
-    TimeOut
+    On = 'On',
+    Off = 'Off',
+    Error = 'Error',
+    TimeOut = 'Timeout'
 }
 
 export interface EventInfo {

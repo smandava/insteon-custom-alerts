@@ -1,8 +1,8 @@
-﻿import {Context} from 'aws-lambda';
+﻿import { Context } from 'aws-lambda';
 import Config from './config';
 import api from './insteon';
 import S3Provider from './s3-provider';
-import {DeviceStatus} from './interfaces';
+import { DeviceStatus } from './interfaces';
 import SlackProvider from './slack-provider';
 
 export async function handler (event: {} , context: Context|{}, callback: {} ) {

@@ -1,6 +1,6 @@
 import Config from './config';
 import fetch, { Response } from 'node-fetch';
-import {DeviceType, DeviceStatusCode} from './interfaces';
+import { DeviceType, DeviceStatusCode } from './interfaces';
 
 class InsteonApi {
  

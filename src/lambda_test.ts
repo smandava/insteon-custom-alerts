@@ -1,5 +1,5 @@
-﻿import {Context} from 'aws-lambda';
-import {handler} from './app';
+﻿import { Context } from 'aws-lambda';
+import { handler } from './app';
 
 // Set the region to the locations of the S3 buckets
 // process.env['AWS_REGION'] = 'us-west-2';

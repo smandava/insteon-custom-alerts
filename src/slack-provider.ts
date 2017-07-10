@@ -1,6 +1,6 @@
 import Config from './config';
-import {DeviceStatus} from './interfaces';
-import fetch, {Request} from 'node-fetch';
+import { DeviceStatus } from './interfaces';
+import fetch, { Request } from 'node-fetch';
 import * as moment from 'moment';
 
 class SlackProvider {

@@ -1,5 +1,5 @@
-import {S3} from 'aws-sdk';
-import {DeviceStatus, DeviceStatusCode} from './interfaces';
+import { S3 } from 'aws-sdk';
+import { DeviceStatus, DeviceStatusCode } from './interfaces';
 
 class S3Provider {
 

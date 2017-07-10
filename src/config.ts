@@ -1,4 +1,4 @@
-import {DeviceType, EventType, EventInfo} from './interfaces';
+import { DeviceType, EventType, EventInfo } from './interfaces';
 import Event from './event';
 
 class Config {   
