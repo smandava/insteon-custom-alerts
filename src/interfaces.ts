@@ -7,8 +7,8 @@ export enum EventType {
 }
 
 export enum DeviceStatusCode {
-    On = 'On',
-    Off = 'Off',
+    Open = 'Open',
+    Closed = 'Closed',
     Error = 'Error',
     TimeOut = 'Timeout'
 }

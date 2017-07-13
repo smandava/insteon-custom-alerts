@@ -148,9 +148,9 @@ class InsteonApi {
                     if (commandStatus.hasOwnProperty('response') &&
                         commandStatus.response.hasOwnProperty('level')) {
                         if (commandStatus.response.level === 100) {
-                            return DeviceStatusCode.Off;
+                            return DeviceStatusCode.Closed;
                         } else if (commandStatus.response.level === 0) {
-                            return DeviceStatusCode.On;
+                            return DeviceStatusCode.Open;
                         } else {
                             console.log('Unable to get response.level from');
                             console.log(commandStatus);
