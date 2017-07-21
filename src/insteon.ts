@@ -177,15 +177,80 @@ class InsteonApi {
         }        
     }
 
+    static async GetOnOffSwitchStatus(deviceId: number, pollingInterval: number= 3): Promise<DeviceStatusCode> {
+        try {
+            let headers = await InsteonApi.getAuthHeaders();
+            headers['Content-Type'] = 'application/json';
+            let body = {
+                command: 'get_status',
+                device_id: deviceId
+            };
+            let opts = {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: headers
+            };
+            let response = await fetch(InsteonApi.commandApiUrl, opts);
+            let commandStatus = await InsteonApi.getJson(response, 'getDeviceInfo');
+            
+            for (let i = 0; i < 5; ++i) {
+                if (commandStatus.status === 'pending') {
+                    await InsteonApi.sleep(pollingInterval);
+                    commandStatus = await InsteonApi.getCommandStatus(commandStatus.id);
+                    
+                } else if (commandStatus.status === 'succeeded') {
+                    if (commandStatus.hasOwnProperty('response') &&
+                        commandStatus.response.hasOwnProperty('level')) {
+                        if (commandStatus.response.level === 100) {
+                            return DeviceStatusCode.On;
+                        } else if (commandStatus.response.level === 0) {
+                            return DeviceStatusCode.Off;
+                        } else {
+                            console.log('Unable to get response.level from');
+                            console.log(commandStatus);
+                            return DeviceStatusCode.Error;
+                        }
+                    } else {
+                        console.log('invalid response');
+                        console.log(commandStatus);
+                        return DeviceStatusCode.Error;
+                    }
+                } else {
+                    console.log('invalid response');
+                    console.log(commandStatus);
+                    return DeviceStatusCode.Error;
+                }
+            }
+            console.log('Giving up device status query after 5 attempts');
+            console.log(commandStatus);
+            return DeviceStatusCode.TimeOut;
+
+        } catch (e) {
+            console.log(e);
+            return DeviceStatusCode.Error;
+        }        
+    }
+
     static async getDeviceStatus(deviceId: number, deviceType: DeviceType): Promise<DeviceStatusCode> {
         try {
             switch (deviceType) {
                 case DeviceType.IO_MODULE :
-                    let deviceStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId);
+                    let ioModuleStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId);
+                    for (let i = 0; i < 5; ++i) {
+                        if (ioModuleStatus === DeviceStatusCode.Error) {
+                            InsteonApi.sleep(5);
+                            ioModuleStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId, 10);
+                        } else {
+                            break;
+                        }
+                    }
+                    return ioModuleStatus;
+                case DeviceType.ON_OFF_SWITCH :
+                    let deviceStatus = await InsteonApi.GetOnOffSwitchStatus(deviceId);
                     for (let i = 0; i < 5; ++i) {
                         if (deviceStatus === DeviceStatusCode.Error) {
                             InsteonApi.sleep(5);
-                            deviceStatus = await InsteonApi.GetIoModuleDeviceStatus(deviceId, 10);
+                            deviceStatus = await InsteonApi.GetOnOffSwitchStatus(deviceId, 10);
                         } else {
                             break;
                         }

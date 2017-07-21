@@ -1,5 +1,6 @@
 export enum DeviceType {
-    IO_MODULE
+    IO_MODULE,
+    ON_OFF_SWITCH
 }
 
 export enum EventType {
@@ -9,6 +10,8 @@ export enum EventType {
 export enum DeviceStatusCode {
     Open = 'Open',
     Closed = 'Closed',
+    On = 'On',
+    Off = 'Off',
     Error = 'Error',
     TimeOut = 'Timeout'
 }

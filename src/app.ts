@@ -19,7 +19,9 @@ export async function handler (event: {} , context: Context|{}, callback: {} ) {
                 Status: status,
                 Threshold: eventDetails.ThereshHoldInMinutes
             };
-            if (status !== DeviceStatusCode.Closed ) {
+            if ( (status !== DeviceStatusCode.Closed ) &&
+                 (status !== DeviceStatusCode.Off )
+             ) {
                 log = true;
             }
         } catch (e) {

@@ -26,6 +26,9 @@ class Event implements EventInfo {
                             case 'I/O Module':
                                 event[prop] = DeviceType.IO_MODULE;
                                 break;
+                            case 'On/Off Switch':
+                                event[prop] = DeviceType.ON_OFF_SWITCH;
+                                break;                            
                             case 'RunningTooLong':
                                 event[prop] = EventType.RunningTooLong;
                                 break;

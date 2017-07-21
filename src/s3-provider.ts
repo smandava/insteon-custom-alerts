@@ -55,7 +55,8 @@ class S3Provider {
         for (let deviceId in currentStatus) {
             if (currentStatus.hasOwnProperty(deviceId)) {
                 let status: DeviceStatus = currentStatus[deviceId];
-                if (status.Status === DeviceStatusCode.Closed) {
+                if (status.Status === DeviceStatusCode.Closed
+                    || status.Status === DeviceStatusCode.Off) {
                     continue;
                 }
                 log = true;
