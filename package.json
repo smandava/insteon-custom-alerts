@@ -20,6 +20,8 @@
     "webpack": "^3.0.0"
   },
   "scripts": {
+    "prestart": "webpack",
+    "prepublish": "webpack",
     "setup_s3": "cross-env AWS_PROFILE=insteon-alerts-account node build/s3_setup.js",
     "publish": "cross-env AWS_PROFILE=insteon-alerts-account node build/publish_lambda.js",
     "start": "cross-env AWS_PROFILE=insteon-alerts-account node build/lambda_test.js",
